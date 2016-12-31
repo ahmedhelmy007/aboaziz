@@ -1,0 +1,11 @@
+<!-- Filename: /module/Sermon/view/sermon/list/index.phtml -->
+<h1>Sermon</h1>
+
+<?php foreach ($this->sermons as $sermon): ?>
+    <article>
+        <h1 id="sermon<?= $sermon->getId() ?>"><?= $sermon->getTitle() ?></h1>
+        <p>
+            <?= $sermon->getDescription() ?>
+        </p>
+    </article>
+<?php endforeach ?>

@@ -1,0 +1,11 @@
+<!-- Filename: /module/Sermon/view/blog/sermon/delete.phtml -->
+<h1>Delete Sermon</h1>
+<p>
+    Are you sure that you want to delete
+    '<?php echo $this->escapeHtml($this->sermon->getTitle()); ?>' by
+    '<?php echo $this->escapeHtml($this->sermon->getDescription()); ?>'?
+</p>
+<form action="<?php echo $this->url('sermon/delete', array(), true) ?>" method="post">
+    <input type="submit" name="delete_confirmation" value="yes">
+    <input type="submit" name="delete_confirmation" value="no">
+</form>

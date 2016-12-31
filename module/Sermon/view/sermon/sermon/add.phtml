@@ -1,0 +1,13 @@
+<!-- Filename: /module/Sermon/view/sermon/sermon/add.phtml -->
+<h1>Add new Sermon</h1>
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url());
+//$form->setAttribute('method', 'GET');//If you want to change it to GET though, set the specific attribute prior to the prepare() call
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo $this->formCollection($form);
+
+echo $this->form()->closeTag();

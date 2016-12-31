@@ -1,0 +1,9 @@
+<!-- FileName: /module/Sermon/view/sermon/list/detail.phtml -->
+<h1>Sermon Details</h1>
+
+<dl>
+    <dt>Sermon Title</dt>
+    <dd><?php echo $this->escapeHtml($this->sermon->getTitle()); ?></dd>
+    <dt>Sermon Text</dt>
+    <dd><?php echo $this->escapeHtml($this->sermon->getDescription()); ?></dd>
+</dl>

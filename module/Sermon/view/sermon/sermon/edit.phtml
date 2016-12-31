@@ -1,0 +1,15 @@
+<!-- Filename: /module/Sermon/view/sermon/sermon/edit.phtml -->
+<h1>Edit Sermon</h1>
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url( 'sermon/edit', array(), true ));
+//$form->setAttribute('method', 'GET');//If you want to change it to GET though, set the specific attribute prior to the prepare() call
+$form->prepare();
+
+$form->get('submit')->setValue('Update sermon'); //changing button text inside the view
+
+echo $this->form()->openTag($form);
+
+echo $this->formCollection($form);
+
+echo $this->form()->closeTag();
