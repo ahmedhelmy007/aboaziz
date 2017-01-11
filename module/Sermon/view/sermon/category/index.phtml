@@ -15,7 +15,7 @@ $this->headTitle($title);
     <th>Artist</th>
     <th>&nbsp;</th>
 </tr>
-<?php foreach ($categories as $category) : ?>
+<?php foreach ($this->paginator as $category) : ?>
 <tr>
     <td><?php echo $this->escapeHtml($category->title);?></td>
     <td><?php echo $this->escapeHtml($category->description);?></td>
@@ -28,3 +28,18 @@ $this->headTitle($title);
 </tr>
 <?php endforeach; ?>
 </table>
+
+<?php
+ echo $this->paginationControl(
+     // the paginator object
+     $this->paginator,
+     // the scrolling style
+     'sliding',
+     // the partial to use to render the control
+     'partial/paginator.phtml',
+     // the route to link to when a user clicks a control link
+     array(
+         'route' => 'category'
+     )
+ );
+ ?>

@@ -2,6 +2,13 @@
 <h1>Edit Sermon</h1>
 <?php
 $form = $this->form;
+// The first parameter to url() is the route name that we wish to use for construction of the URL and then the second 
+// parameter is an array of all the variables to fit into the place-holders to use
+//in the form action, we need to pass the ID to the url() view helper like this: 
+//$this->url('sermon/edit', array('id' => $id));
+//However, $id is not available as we have not assigned it to the view. The Zend\Mvc\Router-component however provides 
+//us with a nice functionality to re-use the currently matched parameters. This is done by setting the last parameter 
+//of the view-helper to true
 $form->setAttribute('action', $this->url( 'sermon/edit', array(), true ));
 //$form->setAttribute('method', 'GET');//If you want to change it to GET though, set the specific attribute prior to the prepare() call
 $form->prepare();

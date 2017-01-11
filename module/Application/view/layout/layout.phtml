@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle($this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -39,11 +39,30 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
+                        <?php
+                        //the following will print the whole menu and sub-items with default styling
+                        //echo $this->navigation('navigation')->menu();
+                        
+                        //The great thing about Zend\Navigation is that it integrates with ZF2’s route so can tell 
+                        //which page you are currently viewing. Because of this, it sets the active page to have a 
+                        //class of active in the menu. Twitter Bootstrap uses this to highlight your current page accordingly.
+                        echo $this->navigation('navigation')
+                            ->menu()
+                            ->setMinDepth(0)
+                            ->setMaxDepth(0)
+                            ->setUlClass('nav navbar-nav');
+                        ?>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
         <div class="container">
+            <?php 
+            echo $this->navigation('navigation')
+              ->breadcrumbs()
+              ->setMinDepth(0)
+              ->setPartial('partial/breadcrumb.phtml');
+            ?>
             <?php echo $this->content; ?>
             <hr>
             <footer>

@@ -30,18 +30,25 @@ class ZendDbSqlMapper implements SermonMapperInterface {
     /**
      * @var \Sermon\Model\SermonInterface
      */
-    protected $sermonPrototype;
+    protected $objectPrototype;
+
+    /**
+     * @var string
+     */
+    protected $tableName;
 
     /**
      * @param AdapterInterface  $dbAdapter
      * @param HydratorInterface $hydrator
-     * @param SermonInterface    $sermonPrototype
+     * @param SermonInterface    $objectPrototype
      */
-    public function __construct(AdapterInterface $dbAdapter, HydratorInterface $hydrator, SermonInterface $sermonPrototype) {
+    public function __construct(AdapterInterface $dbAdapter, $tableName, HydratorInterface $hydrator, 
+            SermonInterface $objectPrototype) {
 
         $this->dbAdapter = $dbAdapter;
+        $this->tableName = $tableName;
         $this->hydrator = $hydrator;
-        $this->sermonPrototype = $sermonPrototype;
+        $this->objectPrototype = $objectPrototype;
     }
 
     /**
@@ -59,10 +66,10 @@ class ZendDbSqlMapper implements SermonMapperInterface {
         $result = $stmt->execute();
 
         if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows()) {
-            return $this->hydrator->hydrate($result->current(), $this->sermonPrototype);
+            return $this->hydrator->hydrate($result->current(), $this->objectPrototype);
         }
 
-        throw new \InvalidArgumentException("Sermon with given ID:{$id} not found.");
+        throw new \InvalidArgumentException("Given ID:{$id} not found.");
     }
 
     /**
@@ -70,22 +77,23 @@ class ZendDbSqlMapper implements SermonMapperInterface {
      */
     public function findAll() {
         $sql = new Sql($this->dbAdapter);
-        $select = $sql->select('az_sermons');
+        $select = $sql->select($this->tableName);
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 //        \Zend\Debug\Debug::dump($result);die();
-        //Our Mapper has now a really good architecture and no more hidden dependencies.
+        //Our Mapper has now a really good architecture and no more hidden dependencies, becuase: table name, hydrator,
+        //and entity are passed to the constructor by the Factory 
         if ($result instanceof ResultInterface && $result->isQueryResult()) {
-            $resultSet = new HydratingResultSet($this->hydrator, $this->sermonPrototype);
+            $resultSet = new HydratingResultSet($this->hydrator, $this->objectPrototype);
             return $resultSet->initialize($result);
         }
 
-        //FOR DEBUGGING uncomment ResultSet object. A very interesting property in ResultSet object is 
-        //["returnType":protected] => string(11) "arrayobject". This tells us
-        // that all database entries will be returned as an ArrayObject. And this is a little problem as the 
-        // SermonMapperInterface requires us to return an array of SermonInterface objects. Luckily there is a very simple 
-        //option for us available to make this happen. In the examples above we have used the default ResultSet object.
+        //FOR DEBUGGING, uncomment ResultSet object. A very interesting property in ResultSet object is 
+        //["returnType":protected] => string(11) "arrayobject". This tells us that all database entries will be 
+        //returned as an ArrayObject. And this is a little problem as the SermonMapperInterface requires us to return 
+        //an array of SermonInterface objects. Luckily there is a very simple option for us available to make this 
+        //happen. In the examples above we have used the default ResultSet object.
         // $resultSet = new ResultSet();
         // \Zend\Debug\Debug::dump($resultSet->initialize($result));die();
 
@@ -103,12 +111,12 @@ class ZendDbSqlMapper implements SermonMapperInterface {
         unset($sermonData['id']); // Neither Insert nor Update needs the ID in the array
         if ($sermonObject->getId()) {
             // ID present, it's an Update
-            $action = new Update('az_sermons');
+            $action = new Update($this->tableName);
             $action->set($sermonData);
             $action->where(array('id = ?' => $sermonObject->getId()));
         } else {
             // ID NOT present, it's an Insert
-            $action = new Insert('az_sermons');
+            $action = new Insert($this->tableName);
             $action->values($sermonData);
         }
 
@@ -135,7 +143,7 @@ class ZendDbSqlMapper implements SermonMapperInterface {
      * ################################ {@inheritDoc} 
      */
     public function delete(SermonInterface $sermonObject) {
-        $action = new Delete('az_sermons');
+        $action = new Delete($this->tableName);
         $action->where(array('id = ?' => $sermonObject->getId()));
 
         $sql = new Sql($this->dbAdapter);

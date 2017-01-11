@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -61,6 +62,7 @@ return array(
         ),
         'factories' => array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
+            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
         ),
     ),
     'translator' => array(
@@ -98,6 +100,35 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+            ),
+        ),
+    ),
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Home',
+                'route' => 'home',
+            ),
+            array(
+                'label' => 'Sermon',
+                'route' => 'sermon',
+                'pages' => array(
+                    array(
+                        'label' => 'Add',
+                        'route' => 'sermon/add',
+                        'action' => 'add',
+                    ),
+                    array(
+                        'label' => 'Edit',
+                        'route' => 'sermon/edit',
+                        'action' => 'edit',
+                    ),
+                    array(
+                        'label' => 'Delete',
+                        'route' => 'sermon/delete',
+                        'action' => 'delete',
+                    ),
+                ),
             ),
         ),
     ),

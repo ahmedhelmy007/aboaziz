@@ -1,0 +1,23 @@
+<?php
+$title = 'Add new series';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('series', array('action' => 'add')));
+$form->get('submit')->setAttribute('value', 'Add');
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+//Note that the formRow view helper is just a convenience - we could have used formInput(), formLabel() and 
+//formElementErrors() separately had we wanted to.
+echo $this->formRow($form->get('title'));
+?>
+<div>
+    <?php echo $this->formInput($form->get('submit')); ?>
+</div>
+<?php
+echo $this->form()->closeTag($form);

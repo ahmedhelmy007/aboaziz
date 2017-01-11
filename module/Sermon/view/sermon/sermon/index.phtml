@@ -1,11 +1,13 @@
 <!-- Filename: /module/Sermon/view/sermon/list/index.phtml -->
+<?php  $this->headTitle('Sermons List'); ?>
 <h1>Sermon</h1>
-
+<p><a href="<?php echo $this->url('sermon/add', array(
+         'action'=>'add'));?>">Add new item</a></p>
 <?php foreach ($this->sermons as $sermon): ?>
     <article>
-        <h1 id="sermon<?= $sermon->getId() ?>"><?= $sermon->getTitle() ?></h1>
+        <h1 id="sermon<?= $sermon->getId() ?>"><?= $this->escapeHtml( $sermon->getTitle() ) ?></h1>
         <p>
-            <?= $sermon->getDescription() ?>
+            <?= $this->escapeHtml( $sermon->getDescription() ) ?>
         </p>
     </article>
 <?php endforeach ?>

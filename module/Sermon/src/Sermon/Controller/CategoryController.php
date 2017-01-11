@@ -10,6 +10,9 @@ use Sermon\Form\CategoryForm;
 /**
  * controller must implement ZendStdlibDispatchableInterface in order to be ‘dispatched’ (or run) by 
  * ZendFramework’s MVC layer
+ * Zend Framework 2 provides two abstract classes that do this for us: Zend\Mvc\Controller\ActionController and 
+ * Zend\Mvc\Controller\RestfulController. If you’re intending to write a RESTful web service, 
+ * AbstractRestfulController may be useful.
  */
 
 class CategoryController extends AbstractActionController {
@@ -17,8 +20,15 @@ class CategoryController extends AbstractActionController {
     protected $categoryTable;
 
     public function indexAction() {
+        // grab the paginator from the AlbumTable
+        $paginator = $this->getCategoryTable()->fetchAll(true);
+        // set the current page to what has been passed in query string, or to 1 if none set
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
+        // set the number of items per page to 10
+        $paginator->setItemCountPerPage(3);
+
         return new ViewModel(array(
-            'categories' => $this->getCategoryTable()->fetchAll(),
+            'paginator' => $paginator ,
         ));
     }
 

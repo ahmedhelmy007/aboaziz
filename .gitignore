@@ -9,5 +9,6 @@ nbproject
 .settings
 vendor
 composer.phar
+composer.lock
 config/autoload/global.php
 config/autoload/local.php

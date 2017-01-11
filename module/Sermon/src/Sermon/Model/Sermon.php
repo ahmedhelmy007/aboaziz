@@ -26,6 +26,14 @@ class Sermon implements SermonInterface {
     protected $category_id;
 
     /**
+     * 
+     */
+    public function __construct()
+    {
+//        $this->created = date('Y-m-d H:i:s');
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public function getId() {

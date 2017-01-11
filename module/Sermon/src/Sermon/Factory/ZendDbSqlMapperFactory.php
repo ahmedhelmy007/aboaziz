@@ -9,7 +9,7 @@ use Sermon\Model\Sermon;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
- 
+
 class ZendDbSqlMapperFactory implements FactoryInterface {
 
     /**
@@ -21,9 +21,10 @@ class ZendDbSqlMapperFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         
-        //if you tried to get an object using the key: Zend\Db\Adapter\AdapterServiceFactory this will fail
+        //Attempt to directly get an object using the key: Zend\Db\Adapter\AdapterServiceFactory will fail
         return new ZendDbSqlMapper(
             $serviceLocator->get('Zend\Db\Adapter\Adapter'),
+             'az_sermons',
             new ClassMethods(false),
             new Sermon()
         );

@@ -1,0 +1,35 @@
+<?php
+$title = 'My series list';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p><a href="<?php echo $this->url('series', array(
+    'action' => 'add'));
+?>">Add new item</a></p>
+
+
+<table class="table">
+    <tr>
+        <th>Series</th>
+        <th>Created</th>
+        <th>Status</th>
+        <th>Description</th>
+        <th>&nbsp;</th>
+    </tr>
+<?php foreach ($seriesList as $series): ?>
+        <tr>
+            <td>
+                <a href="<?php echo $this->url('series', array('action' => 'edit', 'id' => $series->getId()));
+    ?>">
+    <?php echo $this->escapeHtml($series->getTitle()); ?></a>
+            </td>
+            <td><?php echo $this->escapeHtml($series->getCreated_at()); ?></td>
+            <td><?php echo $series->getStatus() ? 'Yes' : 'No'; ?></td>
+            <td><?php echo $this->escapeHtml($series->getDescription()); ?></td>
+            <td>
+                <a href="<?php echo $this->url('series', array('action' => 'delete', 'id' => $series->getId()));
+    ?>">Delete</a>
+            </td>
+        </tr>
+<?php endforeach; ?>
+</table>
